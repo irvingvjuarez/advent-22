@@ -6,14 +6,15 @@ function fitsInOneBox(boxes) {
 		const currentBox = boxes[boxIndex]
 
 		const fitsInThisBox = currentBoxes.every(box => {
-			const fitsInLength = box.l < currentBox.l
-			const fitsInWidth = box.w < currentBox.w
-			const fitsInHeight = box.h < currentBox.h
+			const fitsInLength = currentBox.l > box.l
+			const fitsInWidth = currentBox.w > box.w
+			const fitsInHeight = currentBox.h > box.h
+
 			return fitsInHeight && fitsInWidth && fitsInLength
 		})
 
 		if (fitsInThisBox) {
-			result = true;
+			result = fitsInThisBox
 			break;
 		}
 	}
@@ -22,8 +23,9 @@ function fitsInOneBox(boxes) {
 }
 
 const boxes = [
-	{ l: 1, w: 1, h: 1 },
-  { l: 2, w: 2, h: 2 }
+	{ l: 1, w: 1, h: 10 },
+  { l: 3, w: 3, h: 12 },
+  { l: 2, w: 2, h: 1 }
 ]
 
 const result = fitsInOneBox(boxes)
