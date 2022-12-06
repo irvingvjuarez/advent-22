@@ -24,11 +24,29 @@ function fitsInOneBox(boxes) {
   return result
 }
 
-const boxes = [
+const exerciseOne = fitsInOneBox([
+  { l: 1, w: 1, h: 1 },
+  { l: 2, w: 2, h: 2 }
+])
+console.log({ exerciseOne }) // true
+
+const test2 = fitsInOneBox([
 	{ l: 1, w: 1, h: 10 },
   { l: 3, w: 3, h: 12 },
   { l: 2, w: 2, h: 1 }
-]
+])
+console.log({ test2 }) // false
 
-const result = fitsInOneBox(boxes)
-console.log({ result })
+const test3 = fitsInOneBox([
+	{ l: 1, w: 1, h: 1 },
+  { l: 2, w: 2, h: 2 },
+  { l: 3, w: 1, h: 3 }
+])
+console.log({ test3 }) // false
+
+const test4 = fitsInOneBox([
+	{ l: 1, w: 1, h: 1 },
+  { l: 3, w: 3, h: 3 },
+  { l: 2, w: 2, h: 2 }
+])
+console.log({ test4 }) // true
