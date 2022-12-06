@@ -14,7 +14,9 @@ function fitsInOneBox(boxes) {
 		})
 
 		if (fitsInThisBox) {
-			result = fitsInThisBox
+			const boxesRecursion = currentBoxes.length > 1 ? fitsInOneBox(currentBoxes) : true
+
+			result = fitsInThisBox && boxesRecursion
 			break;
 		}
 	}
