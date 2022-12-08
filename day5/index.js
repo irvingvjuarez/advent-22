@@ -29,10 +29,14 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 	}
 }
 
-console.log(
-	getMaxGifts([50], 15, 1)
-) // 0
+// console.log(
+// 	getMaxGifts([50], 15, 1)
+// ) // 0
+
+// console.log(
+// 	getMaxGifts([50], 100, 1)
+// ) // 50
 
 console.log(
-	getMaxGifts([50], 100, 1)
-) // 50 || "process..."
+	getMaxGifts([12, 3, 11, 5, 7], 20, 3)
+) // 20
