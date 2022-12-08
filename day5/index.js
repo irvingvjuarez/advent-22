@@ -11,8 +11,13 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 		if (currentValue > maxNumber && currentValue <= maxGifts) {
 			maxNumber = currentValue
 		}
-		return maxNumber
-	} else if (availableCities) {
+
+		if (giftsCities.length <= 1) {
+			return maxNumber
+		}
+	}
+
+	if (availableCities) {
 		giftsCities.forEach((_cityGifts, cityGiftsIndex) => {
 			const currentGiftsCities = [...giftsCities]
 			currentGiftsCities.splice(cityGiftsIndex, 1)
@@ -29,14 +34,44 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 	}
 }
 
-// console.log(
-// 	getMaxGifts([50], 15, 1)
-// ) // 0
+console.log(
+	getMaxGifts([50], 15, 1)
+) // 0
 
-// console.log(
-// 	getMaxGifts([50], 100, 1)
-// ) // 50
+maxNumber = 0
+
+console.log(
+	getMaxGifts([50], 100, 1)
+) // 50
+
+maxNumber = 0;
 
 console.log(
 	getMaxGifts([12, 3, 11, 5, 7], 20, 3)
 ) // 20
+
+maxNumber = 0
+
+console.log(
+	getMaxGifts([50, 70], 100, 1)
+) // 70
+
+maxNumber = 0
+
+console.log(
+	getMaxGifts([50, 70, 30], 100, 2)
+) // 100
+
+maxNumber = 0
+
+console.log(
+	getMaxGifts([50, 70, 30], 100, 3)
+) // 100
+
+maxNumber = 0
+
+console.log(
+	getMaxGifts([50, 70, 30], 100, 4)
+) // 100
+
+maxNumber = 0
