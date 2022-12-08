@@ -1,6 +1,6 @@
 function getMaxGifts(giftsCities, maxGifts, maxCities) {
 	let result = 0
-	const availableCities = giftsCities.length > 0
+	if (giftsCities.length < 1) return result
 	const returnPoint = giftsCities.length <= maxCities
 
 	if (returnPoint) {
@@ -14,31 +14,27 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 		}
 	}
 
-	if (availableCities) {
-		let currentResult
+	let currentResult
 
-		if (giftsCities.length === 1) {
-			currentResult = giftsCities[0]
+	if (giftsCities.length === 1) {
+		currentResult = giftsCities[0]
+
+		if (currentResult > result && currentResult <= maxGifts) {
+			result = currentResult
+		}
+	} else {
+		for (let cityGiftsIndex in giftsCities) {
+			const currentGiftsCities = [...giftsCities]
+			currentGiftsCities.splice(cityGiftsIndex, 1)
+			currentResult = getMaxGifts(currentGiftsCities, maxGifts, maxCities)
 
 			if (currentResult > result && currentResult <= maxGifts) {
 				result = currentResult
 			}
-		} else {
-			for (let cityGiftsIndex in giftsCities) {
-				const currentGiftsCities = [...giftsCities]
-				currentGiftsCities.splice(cityGiftsIndex, 1)
-				currentResult = getMaxGifts(currentGiftsCities, maxGifts, maxCities)
-
-				if (currentResult > result && currentResult <= maxGifts) {
-					result = currentResult
-				}
-			}
 		}
-
-		return result
-	} else {
-		return result
 	}
+
+	return result
 }
 
 const timeStart = performance.now()
