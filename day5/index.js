@@ -1,8 +1,7 @@
 function getMaxGifts(giftsCities, maxGifts, maxCities) {
-	giftsCities = giftsCities.filter(city => city <= maxGifts)
+	let result = 0
 	const availableCities = giftsCities.length > 0
 	const returnPoint = giftsCities.length <= maxCities
-	let result = 0
 
 	if (returnPoint) {
 		const currentValue = giftsCities.reduce((previous, current) => previous += current, 0)
@@ -16,21 +15,33 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 	}
 
 	if (availableCities) {
-		giftsCities.forEach((_cityGifts, cityGiftsIndex) => {
-			const currentGiftsCities = [...giftsCities]
-			currentGiftsCities.splice(cityGiftsIndex, 1)
-			const currentResult = getMaxGifts(currentGiftsCities, maxGifts, maxCities)
+		let currentResult
+
+		if (giftsCities.length === 1) {
+			currentResult = giftsCities[0]
 
 			if (currentResult > result && currentResult <= maxGifts) {
 				result = currentResult
 			}
-		})
+		} else {
+			for (let cityGiftsIndex in giftsCities) {
+				const currentGiftsCities = [...giftsCities]
+				currentGiftsCities.splice(cityGiftsIndex, 1)
+				currentResult = getMaxGifts(currentGiftsCities, maxGifts, maxCities)
+
+				if (currentResult > result && currentResult <= maxGifts) {
+					result = currentResult
+				}
+			}
+		}
 
 		return result
 	} else {
 		return result
 	}
 }
+
+const timeStart = performance.now()
 
 console.log(
 	getMaxGifts([50], 15, 1)
@@ -59,3 +70,7 @@ console.log(
 console.log(
 	getMaxGifts([50, 70, 30], 100, 4)
 ) // 100
+
+const timeEnd = performance.now()
+
+console.log(`Time: ${timeEnd - timeStart}`)
