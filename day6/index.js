@@ -4,8 +4,10 @@ function createCube(size) {
 	let wholeCube = ""
 
 	for(let i = 0; i < size; i++) {
+		const lineBreak = (i === size - 1) ? "" : "\n"
+
 		const upShape = " ".repeat(size - (i + 1)) + "/\\".repeat(i + 1) + "_\\".repeat(size) + "\n"
-		const downShape = " ".repeat(i) + "\\/".repeat(size - i) + "_/".repeat(size) + "\n"
+		const downShape = " ".repeat(i) + "\\/".repeat(size - i) + "_/".repeat(size) + lineBreak
 
 		fromUpDown += upShape
 		fromDownUp += downShape
