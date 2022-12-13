@@ -35,7 +35,7 @@ function getCompleted(part, total) {
 		return time
 	}).reduce((previous, current) => previous += current, 0)
 
-	// console.log({ partTime, totalTime })
+	console.log({ partTime, totalTime })
 
 	const divisionResult = (partTime / totalTime).toFixed(3)
 	totalTime = Math.round(1 / divisionResult)
