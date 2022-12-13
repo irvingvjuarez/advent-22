@@ -38,20 +38,9 @@ function getCompleted(part, total) {
 	let divisionResult = (partTime / totalTime).toFixed(3)
 
 	if(divisionResult > 0.5 && divisionResult < 1) {
-		let splittedBy
-		const intDivisionResult = divisionResult * 10;
-
-		for(let number of primeNumbers) {
-			const subNumber = intDivisionResult / number
-			if (subNumber % 2 === 0) {
-				splittedBy = subNumber
-				break;
-			}
-		}
-
-		const splits = 10 / splittedBy
-		totalTime = splits;
-		partTime = totalTime * divisionResult
+		const missingValue = 1 - divisionResult;
+		partTime = Math.round(divisionResult / missingValue)
+		totalTime = Math.round(partTime / divisionResult)
 	} else {
 		totalTime = Math.round(1 / divisionResult)
 		partTime = Math.round(divisionResult * totalTime)
@@ -78,3 +67,8 @@ console.log(
 console.log(
 	getCompleted('03:30:30', '05:50:50')
 ) // '3/5
+
+
+console.log(
+	getCompleted('02:20:20', '03:30:30')
+) // 2/3
