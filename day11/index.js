@@ -35,11 +35,12 @@ function getCompleted(part, total) {
 		return time
 	}).reduce((previous, current) => previous += current, 0)
 
-	while(primeNumbers.some(num => totalTime % num === 0 && partTime % num === 0)) {
-		const dividor = primeNumbers.find(num => totalTime % num === 0 && partTime % num === 0)
-		partTime /= dividor
-		totalTime /= dividor
-	}
+	// console.log({ partTime, totalTime })
+
+	const divisionResult = (partTime / totalTime).toFixed(3)
+	totalTime = Math.round(1 / divisionResult)
+	partTime = Math.round(divisionResult * totalTime)
+
 
   return `${partTime}/${totalTime}`
 }
