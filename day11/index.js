@@ -1,7 +1,7 @@
 // Pasa todo el tiempo a segundos, lo sumas y divides part/total. El algoritmo seria de reduccion a su minima expresion iterando por un array de numeros primos, hasta que no haya coincidencias en las dos: part y total
 
 function getCompleted(part, total) {
-	const primeNumbers = [10, 9, 7, 5, 3, 2]
+	const primeNumbers = [9, 7, 5, 3, 2]
 
 	let partTime = part.split(":").map((time, timeIndex) => {
 		time = Number(time)
@@ -35,12 +35,27 @@ function getCompleted(part, total) {
 		return time
 	}).reduce((previous, current) => previous += current, 0)
 
-	console.log({ partTime, totalTime })
+	let divisionResult = (partTime / totalTime).toFixed(3)
 
-	const divisionResult = (partTime / totalTime).toFixed(3)
-	totalTime = Math.round(1 / divisionResult)
-	partTime = Math.round(divisionResult * totalTime)
+	if(divisionResult > 0.5 && divisionResult < 1) {
+		let splittedBy
+		const intDivisionResult = divisionResult * 10;
 
+		for(let number of primeNumbers) {
+			const subNumber = intDivisionResult / number
+			if (subNumber % 2 === 0) {
+				splittedBy = subNumber
+				break;
+			}
+		}
+
+		const splits = 10 / splittedBy
+		totalTime = splits;
+		partTime = totalTime * divisionResult
+	} else {
+		totalTime = Math.round(1 / divisionResult)
+		partTime = Math.round(divisionResult * totalTime)
+	}
 
   return `${partTime}/${totalTime}`
 }
