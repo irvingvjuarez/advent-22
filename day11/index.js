@@ -1,7 +1,7 @@
 // Pasa todo el tiempo a segundos, lo sumas y divides part/total. El algoritmo seria de reduccion a su minima expresion iterando por un array de numeros primos, hasta que no haya coincidencias en las dos: part y total
 
 function getCompleted(part, total) {
-	const primeNumbers = [9, 7, 5, 3, 2]
+	const primeNumbers = [2, 3, 5, 7, 9]
 
 	let partTime = part.split(":").map((time, timeIndex) => {
 		time = Number(time)
@@ -37,10 +37,18 @@ function getCompleted(part, total) {
 
 	let divisionResult = (partTime / totalTime).toFixed(3)
 
+	console.log({ divisionResult })
+
 	if(divisionResult > 0.5 && divisionResult < 1) {
 		const missingValue = 1 - divisionResult;
-		partTime = Math.round(divisionResult / missingValue)
-		totalTime = Math.round(partTime / divisionResult)
+
+		const missingValueInteger = missingValue * 10;
+		const divisionResultInteger = divisionResult * 10;
+		const splittedBy = primeNumbers.find(num => missingValueInteger % num === 0 && divisionResultInteger % num === 0)
+		const numberOfSlices = 10 / splittedBy
+
+		totalTime = numberOfSlices
+		partTime = Math.round(divisionResult * numberOfSlices)
 	} else {
 		totalTime = Math.round(1 / divisionResult)
 		partTime = Math.round(divisionResult * totalTime)
@@ -49,26 +57,26 @@ function getCompleted(part, total) {
   return `${partTime}/${totalTime}`
 }
 
-console.log(
-	getCompleted('01:00:00', '03:00:00')
-) // '1/3'
-console.log(
-	getCompleted('02:00:00', '04:00:00')
-) // '1/2'
-console.log(
-	getCompleted('01:00:00', '01:00:00')
-) // '1/1'
-console.log(
-	getCompleted('00:10:00', '01:00:00')
-) // '1/6'
-console.log(
-	getCompleted('01:10:10', '03:30:30')
-) // '1/3'
+// console.log(
+// 	getCompleted('01:00:00', '03:00:00')
+// ) // '1/3'
+// console.log(
+// 	getCompleted('02:00:00', '04:00:00')
+// ) // '1/2'
+// console.log(
+// 	getCompleted('01:00:00', '01:00:00')
+// ) // '1/1'
+// console.log(
+// 	getCompleted('00:10:00', '01:00:00')
+// ) // '1/6'
+// console.log(
+// 	getCompleted('01:10:10', '03:30:30')
+// ) // '1/3'
+// console.log(
+// 	getCompleted('02:20:20', '03:30:30')
+// ) // 2/3
+
+
 console.log(
 	getCompleted('03:30:30', '05:50:50')
 ) // '3/5
-
-
-console.log(
-	getCompleted('02:20:20', '03:30:30')
-) // 2/3
