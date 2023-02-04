@@ -1,6 +1,6 @@
 function getMaxGifts(giftsCities, maxGifts, maxCities) {
 	if (giftsCities.length > 1) {
-		const sums = []
+		let sums = []
 
 		const sortedCities = giftsCities.sort((a, b) => {
 			let res = 0;
@@ -32,21 +32,22 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 			}
 		})
 
-		console.log(sums)
+		sums = sums.map(arr => arr.reduce((prev, current) => prev + current, 0))
+		return Math.max(...sums)
 	}
 
 	const gifts = giftsCities[0]
 	return gifts < maxGifts ? gifts : 0
 }
 
-// console.log(
-// 	getMaxGifts([50], 15, 1)
-// ) // 0
+console.log(
+	getMaxGifts([50], 15, 1)
+) // 0
 
 console.log(
 	getMaxGifts([12, 3, 11, 5, 7], 20, 3)
-)
+) // 20
 
-// console.log(
-// 	getMaxGifts([50, 70], 100, 1)
-// )
+console.log(
+	getMaxGifts([50, 70], 100, 1)
+) // 70
