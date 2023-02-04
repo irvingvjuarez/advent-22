@@ -44,8 +44,8 @@ function getCompleted(part, total) {
 		const missingValueInteger = missingValue * 10;
 		const divisionResultInteger = divisionResult * 10;
 
-		const splittedBy = primeNumbers.find(num => missingValueInteger % num === 0 && divisionResultInteger % num === 0) ?? 3
-		// console.log({ splittedBy })
+		let splittedBy = primeNumbers.find(num => missingValueInteger % num === 0 && divisionResultInteger % num === 0)
+		if (!splittedBy) splittedBy = 3
 
 		const numberOfSlices = Math.round(10 / splittedBy)
 
@@ -76,11 +76,9 @@ console.log(
 ) // '1/3'
 
 
-console.log("------------")
 console.log(
 	getCompleted('03:30:30', '05:50:50')
 ) // '3/5
-console.log("------------")
 console.log(
 	getCompleted('02:20:20', '03:30:30')
 ) // 2/3
