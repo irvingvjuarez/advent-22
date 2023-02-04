@@ -32,7 +32,7 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 			}
 		})
 
-		sums = sums.map(arr => arr.reduce((prev, current) => prev + current, 0))
+		sums = sums.map(arr => arr.reduce((prev, current) => prev + current, 0)).filter(sum => sum <= maxGifts)
 		return Math.max(...sums)
 	}
 
@@ -49,5 +49,21 @@ console.log(
 ) // 20
 
 console.log(
+	getMaxGifts([50], 100, 1)
+) // 50
+
+console.log(
 	getMaxGifts([50, 70], 100, 1)
 ) // 70
+
+console.log(
+	getMaxGifts([50, 70, 30], 100, 2)
+) // 100
+
+console.log(
+	getMaxGifts([50, 70, 30], 100, 3)
+) // 100
+
+console.log(
+	getMaxGifts([50, 70, 30], 100, 4)
+) // 100
