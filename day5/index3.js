@@ -18,12 +18,17 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 			if (maxCities > target.length) {
 				for (let i = 0; i < (maxCities - 1); i++) {
 					const nextNumber = copiedCities[i]
-					const targetSum = target.reduce((prev, current) => prev + current, 0) + nextNumber
 
-					if (targetSum > maxGifts) {
-						break;
+					if (nextNumber){
+						const targetSum = target.reduce((prev, current) => prev + current, 0) + nextNumber
+
+						if (targetSum > maxGifts) {
+							break;
+						} else {
+							target.push(nextNumber)
+						}
 					} else {
-						target.push(nextNumber)
+						break;
 					}
 				}
 
