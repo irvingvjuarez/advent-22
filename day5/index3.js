@@ -17,12 +17,13 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 
 			if (maxCities > target.length) {
 				for (let i = 0; i < (maxCities - 1); i++) {
-					const targetSum = target.reduce((prev, current) => prev + current, 0)
+					const nextNumber = copiedCities[i]
+					const targetSum = target.reduce((prev, current) => prev + current, 0) + nextNumber
 
-					if (targetSum >= maxGifts) {
+					if (targetSum > maxGifts) {
 						break;
 					} else {
-						target.push(copiedCities[i])
+						target.push(nextNumber)
 					}
 				}
 
@@ -33,12 +34,23 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 		})
 
 		sums = sums.map(arr => arr.reduce((prev, current) => prev + current, 0)).filter(sum => sum <= maxGifts)
+
 		return Math.max(...sums)
 	}
 
 	const gifts = giftsCities[0]
 	return gifts < maxGifts ? gifts : 0
 }
+
+console.log(
+	getMaxGifts([50, 10, 40, 1000, 500, 200], 199, 4)
+) // 100
+
+console.log(
+	getMaxGifts([50, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 1000, 1000)
+) // 115
+
+console.log("---------------------")
 
 console.log(
 	getMaxGifts([50], 15, 1)
