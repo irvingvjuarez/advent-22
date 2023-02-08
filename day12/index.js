@@ -1,8 +1,10 @@
 function selectSleigh(distance, sleighs) {
-	sleighs = sleighs.map(sled => ({
-		...sled,
-		totalComsuption: sled.consumption * distance
-	})).sort((a, b) => {
+	for (let i = 0; i < sleighs.length; i++) {
+		const sled = sleighs[i]
+		sled.totalComsuption = sled.consumption * distance
+	}
+
+	sleighs = sleighs.sort((a, b) => {
 		let res = 0
 		if (a.totalComsuption > b.totalComsuption) res = 1
 		if (a.totalComsuption < b.totalComsuption) res = -1
