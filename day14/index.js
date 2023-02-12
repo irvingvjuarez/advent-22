@@ -70,7 +70,7 @@ function getOptimalPath(path) {
 		sums.push(way.sum)
 	})
 
-	const minValue = Math.min(...sums)
+	const minValue = sums.reduce((prev, curr) => curr < prev ? curr : prev, sums[0])
   return minValue
 }
 
