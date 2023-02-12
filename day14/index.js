@@ -46,13 +46,25 @@ function getOptimalPath(path) {
 		}
 	})
 
-	console.log(ways)
+	let sums = []
 
-  return 0
+	ways.forEach(way => {
+		way.sum = way.items.reduce((prev, curr) => prev += curr, 0)
+		sums.push(way.sum)
+	})
+
+	const minValue = Math.min(...sums)
+  return minValue
 }
 
-// getOptimalPath([[0], [2, 3]]) // 2
+console.log(
+	getOptimalPath([[0], [2, 3]]) // 2
+)
 
-// getOptimalPath([[0], [3, 4], [9, 8, 1]]) // 5
+console.log(
+	getOptimalPath([[0], [3, 4], [9, 8, 1]]) // 5
+)
 
-// getOptimalPath([[1], [1, 5], [7, 5, 8], [9, 4, 1, 3]]) // 8
+console.log(
+	getOptimalPath([[1], [1, 5], [7, 5, 8], [9, 4, 1, 3]]) // 8
+)
