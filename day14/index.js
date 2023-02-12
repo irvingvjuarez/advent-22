@@ -1,14 +1,7 @@
 function getOptimalPath(path) {
-	const firstWay = {
-		sum: 0,
-		items: [],
-		index: 0
-	}
-	const secondWay = {
-		sum: 0,
-		items: [],
-		index: 0
-	}
+	const generateWay = (sum= 0, index= 0) => ({sum, index, items: []})
+	const firstWay = generateWay()
+	const secondWay = generateWay()
 
 	const ways = [firstWay, secondWay]
 	const initSetup = (step, pathIndex) => {
@@ -16,34 +9,46 @@ function getOptimalPath(path) {
 		path[pathIndex + 1].forEach((item, index) => ways[index].items.push(item))
 		secondWay.index += 1
 	}
-	const evaluateLowerLevel = (level) => {
-		ways.forEach(({index, items}, wayIndex) => {
+	const evaluateLowerLevel = (level, {pathways = ways, levelIndex}) => {
+		pathways.forEach(({index, items}, wayIndex) => {
 			const subPath = level.filter((_, subIndex) => subIndex === index || subIndex === index + 1)
-
+			const sides = {}
 			// console.log(subPath)
 
-			const sides = {
-				left: subPath[0],
-				right: subPath[1]
-			}
-			let newItem = sides.left
+			let newItem = sides.left = subPath[0]
+			sides.right = subPath[1]
 
 			if (sides.right < sides.left) {
 				ways[wayIndex].index += 1
 				newItem = sides.right
 			} else if (sides.right === sides.left) {
-				// Check lower level
+				// Get index of every item
+				const rightIndex = level.findIndex(item => item == sides.right)
+				const leftIndex = level.findIndex(item => item == sides.left)
+				// Create two new pathways
+				const subPathwayLeft = generateWay(0, leftIndex)
+				const subPathwayRight = generateWay(0, rightIndex)
+				// Get the next level
+				const lowerLevel = path[levelIndex + 1]
+				// Get the returned value to choose something
+				const { updatedPathways } = evaluateLowerLevel(lowerLevel, {
+					pathways: [subPathwayLeft, subPathwayRight]
+				})
 			}
 
 			items.push(newItem)
 		})
+
+		const updatedPathways = {...pathways}
+		return { updatedPathways }
 	}
 
 	path.forEach((step, pathIndex) => {
 		if (pathIndex === 0) initSetup(step, pathIndex)
 
 		if (pathIndex != 0 && path[pathIndex + 1]?.length){
-			evaluateLowerLevel(path[pathIndex + 1])
+			const levelIndex = pathIndex + 1
+			evaluateLowerLevel(path[levelIndex], { levelIndex })
 		}
 	})
 
