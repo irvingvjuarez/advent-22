@@ -9,6 +9,11 @@ function getOptimalPath(path) {
 		path[pathIndex + 1].forEach((item, index) => ways[index].items.push(item))
 		secondWay.index += 1
 	}
+	const rightAsMinor = (wayIndex, sides) => {
+		ways[wayIndex].index += 1
+		return sides.right
+	}
+
 	const evaluateLowerLevel = (level, {pathways = ways, levelIndex}) => {
 		pathways.forEach(({index, items}, wayIndex) => {
 			const subPath = level.filter((_, subIndex) => subIndex === index || subIndex === index + 1)
@@ -19,34 +24,40 @@ function getOptimalPath(path) {
 			sides.right = subPath[1]
 
 			if (sides.right < sides.left) {
-				ways[wayIndex].index += 1
-				newItem = sides.right
+				newItem = rightAsMinor(wayIndex, sides)
 			} else if (sides.right === sides.left) {
 				// Get index of every item
-				const rightIndex = level.findIndex(item => item == sides.right)
-				const leftIndex = level.findIndex(item => item == sides.left)
+				const rightIndex = index + 1
+				const leftIndex = index
 				// Create two new pathways
-				const subPathwayLeft = generateWay(0, leftIndex)
-				const subPathwayRight = generateWay(0, rightIndex)
+				const subPathwayLeft = {...generateWay(0, leftIndex), side: "left"}
+				const subPathwayRight = {...generateWay(0, rightIndex), side: "right"}
 				// Get the next level
 				const lowerLevel = path[levelIndex + 1]
 				// Get the returned value to choose something
 				const { updatedPathways } = evaluateLowerLevel(lowerLevel, {
 					pathways: [subPathwayLeft, subPathwayRight]
 				})
+
+				// I know the first returned item is left
+				const leftResult = updatedPathways[0].items[0]
+				const rightResult = updatedPathways[1].items[0]
+				if (leftResult > rightResult) {
+					newItem = rightAsMinor(wayIndex, sides)
+				}
 			}
 
 			items.push(newItem)
 		})
 
-		const updatedPathways = {...pathways}
+		const updatedPathways = [...pathways]
 		return { updatedPathways }
 	}
 
 	path.forEach((step, pathIndex) => {
 		if (pathIndex === 0) initSetup(step, pathIndex)
 
-		if (pathIndex != 0 && path[pathIndex + 1]?.length){
+		if (pathIndex != 0 && Boolean(path[pathIndex + 1])){
 			const levelIndex = pathIndex + 1
 			evaluateLowerLevel(path[levelIndex], { levelIndex })
 		}
@@ -73,4 +84,8 @@ console.log(
 
 console.log(
 	getOptimalPath([[1], [1, 5], [7, 5, 8], [9, 4, 1, 3]]) // 8
+)
+
+console.log(
+	getOptimalPath([[1], [1, 5], [3, 3, 8], [9, 4, 1, 3]]) // 6
 )
