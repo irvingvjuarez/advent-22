@@ -1,30 +1,52 @@
 function getOptimalPath(path) {
-	const outputs = []
-	let sum = 0, secondSum = 0
-	let i = path.length
-
-	while(path.every(step => step.length)) {
-		for (let current of path) {
-			sum += current[0]
-			secondSum += current[current.length - 1]
-
-		}
-
-		i--
-
-		if (i <= 1) i = path.length
-
-		outputs.push(sum, secondSum)
-		sum = secondSum = 0;
-
-		path[i]?.pop()
-		path[i]?.shift()
+	const firstWay = {
+		sum: 0,
+		items: [],
+		index: 0
+	}
+	const secondWay = {
+		sum: 0,
+		items: [],
+		index: 0
 	}
 
-	console.log("Outputs:", outputs)
-	// console.log("Sum:", sum)
-	// console.log("Second Sum:", secondSum)
-	// console.log("Path:", path)
+	const ways = [firstWay, secondWay]
+
+	path.forEach((step, pathIndex) => {
+		if (pathIndex === 0) {
+			ways.forEach(({items, index}) => items.push(step[index]))
+			path[pathIndex + 1].forEach((item, index) => ways[index].items.push(item))
+
+			secondWay.index += 1
+		}
+
+		if (pathIndex != 0 && path[pathIndex + 1]?.length){
+			const nextLevel = path[pathIndex + 1]
+
+			ways.forEach(({index, items}, wayIndex) => {
+				const subPath = nextLevel.filter((_, subIndex) => subIndex === index || subIndex === index + 1)
+
+				// console.log(subPath)
+
+				const sides = {
+					left: subPath[0],
+					right: subPath[1]
+				}
+				let newItem = sides.left
+
+				if (sides.right < sides.left) {
+					ways[wayIndex].index += 1
+					newItem = sides.right
+				} else if (sides.right === sides.left) {
+					// Check lower level
+				}
+
+				items.push(newItem)
+			})
+		}
+	})
+
+	console.log(ways)
 
   return 0
 }
@@ -33,4 +55,4 @@ function getOptimalPath(path) {
 
 // getOptimalPath([[0], [3, 4], [9, 8, 1]]) // 5
 
-getOptimalPath([[1], [1, 5], [7, 5, 8], [9, 4, 1, 3]]) // 8
+// getOptimalPath([[1], [1, 5], [7, 5, 8], [9, 4, 1, 3]]) // 8
