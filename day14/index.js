@@ -11,38 +11,39 @@ function getOptimalPath(path) {
 	}
 
 	const ways = [firstWay, secondWay]
+	const initSetup = (step, pathIndex) => {
+		ways.forEach(({items, index}) => items.push(step[index]))
+		path[pathIndex + 1].forEach((item, index) => ways[index].items.push(item))
+		secondWay.index += 1
+	}
+	const evaluateLowerLevel = (level) => {
+		ways.forEach(({index, items}, wayIndex) => {
+			const subPath = level.filter((_, subIndex) => subIndex === index || subIndex === index + 1)
+
+			// console.log(subPath)
+
+			const sides = {
+				left: subPath[0],
+				right: subPath[1]
+			}
+			let newItem = sides.left
+
+			if (sides.right < sides.left) {
+				ways[wayIndex].index += 1
+				newItem = sides.right
+			} else if (sides.right === sides.left) {
+				// Check lower level
+			}
+
+			items.push(newItem)
+		})
+	}
 
 	path.forEach((step, pathIndex) => {
-		if (pathIndex === 0) {
-			ways.forEach(({items, index}) => items.push(step[index]))
-			path[pathIndex + 1].forEach((item, index) => ways[index].items.push(item))
-
-			secondWay.index += 1
-		}
+		if (pathIndex === 0) initSetup(step, pathIndex)
 
 		if (pathIndex != 0 && path[pathIndex + 1]?.length){
-			const nextLevel = path[pathIndex + 1]
-
-			ways.forEach(({index, items}, wayIndex) => {
-				const subPath = nextLevel.filter((_, subIndex) => subIndex === index || subIndex === index + 1)
-
-				// console.log(subPath)
-
-				const sides = {
-					left: subPath[0],
-					right: subPath[1]
-				}
-				let newItem = sides.left
-
-				if (sides.right < sides.left) {
-					ways[wayIndex].index += 1
-					newItem = sides.right
-				} else if (sides.right === sides.left) {
-					// Check lower level
-				}
-
-				items.push(newItem)
-			})
+			evaluateLowerLevel(path[pathIndex + 1])
 		}
 	})
 
