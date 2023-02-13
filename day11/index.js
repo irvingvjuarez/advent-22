@@ -15,34 +15,47 @@ function getCompleted(part, total) {
 
 	const primeNumbers = [5, 3, 2]
 
-	const min = (value, divisable = primeNumbers[0]) => {
+	const min = (value, divisable = primeNumbers[0], obj = {}) => {
+		if (value in obj) return obj[value]
 		for(let num of primeNumbers) {
-			if (value % num === 0) return min(value / num, num)
+			if (value % num === 0) {
+				return obj[value] = min(value / num, num, obj)
+			}
 		}
 
-		return {value, divisableUntil: divisable}
+		return obj[value] = {value, divisableUntil: divisable}
 	}
 
-	const reduce = (fraction) => {
+	const reduce = (fraction, obj = {}) => {
+		if (fraction in obj) return obj[fraction]
+
 		fraction = fraction.split("/")
 		const partiality = Number(fraction[0])
 		const totality = Number(fraction[1])
 
 		for(let num of primeNumbers) {
 			if (partiality % num === 0 && totality % num === 0) {
-				return reduce(`${partiality/num}/${totality/num}`)
+				const regularFraction = `${partiality/num}/${totality/num}`
+				return obj[regularFraction] = reduce(regularFraction, obj)
 			}
 		}
 
 		if (partiality <= 9 && totality <= 9) {
-			return fraction.join("/")
-		} else {
-			const {value: partial, divisableUntil: partialDivisable} = min(partiality)
-			const {value: total, divisableUntil: totalDivisable} = min(totality)
-
-			if (partialDivisable > totalDivisable) return `1/${totalDivisable}`
-			return `${partialDivisable}/${totalDivisable}`
+			const newFraction = fraction.join("/")
+			return obj[newFraction] = newFraction
 		}
+
+		const {divisableUntil: partialDivisable} = min(partiality)
+		const {divisableUntil: totalDivisable} = min(totality)
+
+		if (partialDivisable > totalDivisable) {
+			const divisableFraction = `1/${totalDivisable}`
+			return obj[divisableFraction] = divisableFraction
+		}
+
+
+		const finalFraction = `${partialDivisable}/${totalDivisable}`
+		return obj[finalFraction] = finalFraction
 	}
 
   return `${reduce(`${times[0]}/${times[1]}`)}`
