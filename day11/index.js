@@ -13,14 +13,18 @@ function getCompleted(part, total) {
 			.reduce((prev, curr) => curr + prev, 0)
 	})
 
+	const primeNumbers = [5, 3, 2]
+
 	const reduce = (fraction) => {
 		fraction = fraction.split("/")
 		const partiality = Number(fraction[0])
 		const totality = Number(fraction[1])
 
-		if (partiality % 5 === 0 && totality % 5 === 0) return reduce(`${partiality/5}/${totality/5}`)
-		if (partiality % 3 === 0 && totality % 3 === 0) return reduce(`${partiality/3}/${totality/3}`)
-		if (partiality % 2 === 0 && totality % 2 === 0) return reduce(`${partiality/2}/${totality/2}`)
+		for(let num of primeNumbers) {
+			if (partiality % num === 0 && totality % num === 0) {
+				return reduce(`${partiality/num}/${totality/num}`)
+			}
+		}
 		return fraction.join("/")
 	}
 
@@ -39,11 +43,10 @@ console.log(
 console.log(
 	getCompleted('00:10:00', '01:00:00') // '1/6'
 )
+
 console.log(
 	getCompleted('01:10:10', '03:30:30') // '1/3'
 )
-
-
 console.log(
 	getCompleted('03:30:30', '05:50:50') // '3/5
 )
