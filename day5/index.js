@@ -1,72 +1,62 @@
 function getMaxGifts(giftsCities, maxGifts, maxCities) {
-	let result = 0
-	if (giftsCities.length < 1) return result
-	const returnPoint = giftsCities.length <= maxCities
+	const sum = (target, items, shoots) => {
+		if (target <= 0 || shoots <= 0) return 0
 
-	if (returnPoint) {
-		const currentValue = giftsCities.reduce((previous, current) => previous += current, 0)
-		if (currentValue > result && currentValue <= maxGifts) {
-			result = currentValue
-		}
+		const results = []
+		for(let itemIndex in items) {
+			const item = items[itemIndex]
+			const newItems = [...items]
+			newItems.splice(itemIndex, 1)
 
-		if (giftsCities.length <= 1) {
-			return result
-		}
-	}
-
-	let currentResult
-
-	if (giftsCities.length === 1) {
-		currentResult = giftsCities[0]
-
-		if (currentResult > result && currentResult <= maxGifts) {
-			result = currentResult
-		}
-	} else {
-		for (let cityGiftsIndex in giftsCities) {
-			const currentGiftsCities = [...giftsCities]
-			currentGiftsCities.splice(cityGiftsIndex, 1)
-			currentResult = getMaxGifts(currentGiftsCities, maxGifts, maxCities)
-
-			if (currentResult > result && currentResult <= maxGifts) {
-				result = currentResult
+			if (target - item < 0) {
+				results.push(0)
+			} else {
+				results.push(
+					sum(target - item, newItems, shoots - 1) + item
+				)
 			}
 		}
+
+		return Math.max(...results)
 	}
 
-	return result
+  return sum(maxGifts, giftsCities, maxCities)
 }
 
-const timeStart = performance.now()
+const giftsCities = [12, 3, 11]
+const maxGifts = 20
+const maxCities = 2
 
 console.log(
-	getMaxGifts([50], 15, 1)
-) // 0
+	getMaxGifts(giftsCities, maxGifts, maxCities) // 15 (12 + 3)
+)
+
+const giftsCities2 = [12, 3, 11, 5, 7]
+const maxGifts2 = 20
+const maxCities2 = 3
 
 console.log(
-	getMaxGifts([50], 100, 1)
-) // 50;
+	getMaxGifts(giftsCities2, maxGifts2, maxCities2) // 20 (12 + 3 + 5)
+)
 
 console.log(
-	getMaxGifts([12, 3, 11, 5, 7], 20, 3)
-) // 20
-
+	getMaxGifts([12, 3, 11, 5, 7], 20, 3) // 20
+)
 console.log(
-	getMaxGifts([50, 70], 100, 1)
-) // 70
-
+	getMaxGifts([50], 15, 1) // 0
+)
 console.log(
-	getMaxGifts([50, 70, 30], 100, 2)
-) // 100
-
+	getMaxGifts([50], 100, 1) // 50
+)
 console.log(
-	getMaxGifts([50, 70, 30], 100, 3)
-) // 100
-
+	getMaxGifts([50, 70], 100, 1) // 70
+)
 console.log(
-	getMaxGifts([50, 70, 30], 100, 4)
-) // 100
-
-const timeEnd = performance.now()
-
-console.log(`Time: ${timeEnd - timeStart}`)
+	getMaxGifts([50, 70, 30], 100, 2) // 100
+)
+console.log(
+	getMaxGifts([50, 70, 30], 100, 3) // 100
+)
+console.log(
+	getMaxGifts([50, 70, 30], 100, 4) // 100
+)
