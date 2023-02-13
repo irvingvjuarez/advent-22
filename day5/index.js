@@ -13,7 +13,7 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 				results.push(0)
 			} else {
 				results.push(
-					sum(target - item, newItems, shoots - 1) + item
+					sum(target - item, newItems, shoots - 1, obj) + item
 				)
 			}
 		}
