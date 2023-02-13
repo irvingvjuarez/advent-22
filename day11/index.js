@@ -13,7 +13,18 @@ function getCompleted(part, total) {
 			.reduce((prev, curr) => curr + prev, 0)
 	})
 
-  return `${times[0]}/${times[1]}`
+	const reduce = (fraction) => {
+		fraction = fraction.split("/")
+		const partiality = Number(fraction[0])
+		const totality = Number(fraction[1])
+
+		if (partiality % 5 === 0 && totality % 5 === 0) return reduce(`${partiality/5}/${totality/5}`)
+		if (partiality % 3 === 0 && totality % 3 === 0) return reduce(`${partiality/3}/${totality/3}`)
+		if (partiality % 2 === 0 && totality % 2 === 0) return reduce(`${partiality/2}/${totality/2}`)
+		return fraction.join("/")
+	}
+
+  return `${reduce(`${times[0]}/${times[1]}`)}`
 }
 
 console.log(
