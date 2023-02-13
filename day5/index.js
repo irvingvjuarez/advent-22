@@ -1,6 +1,7 @@
 function getMaxGifts(giftsCities, maxGifts, maxCities) {
-	const sum = (target, items, shoots) => {
+	const sum = (target, items, shoots, obj = {}) => {
 		if (target <= 0 || shoots <= 0) return 0
+		if (target in obj) return obj[target]
 
 		const results = []
 		for(let itemIndex in items) {
@@ -17,7 +18,7 @@ function getMaxGifts(giftsCities, maxGifts, maxCities) {
 			}
 		}
 
-		return Math.max(...results)
+		return obj[target] = Math.max(...results)
 	}
 
   return sum(maxGifts, giftsCities, maxCities)
