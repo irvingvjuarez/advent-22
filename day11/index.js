@@ -15,6 +15,14 @@ function getCompleted(part, total) {
 
 	const primeNumbers = [5, 3, 2]
 
+	const min = (value, divisable = primeNumbers[0]) => {
+		for(let num of primeNumbers) {
+			if (value % num === 0) return min(value / num, num)
+		}
+
+		return {value, divisableUntil: divisable}
+	}
+
 	const reduce = (fraction) => {
 		fraction = fraction.split("/")
 		const partiality = Number(fraction[0])
@@ -25,7 +33,16 @@ function getCompleted(part, total) {
 				return reduce(`${partiality/num}/${totality/num}`)
 			}
 		}
-		return fraction.join("/")
+
+		if (partiality <= 9 && totality <= 9) {
+			return fraction.join("/")
+		} else {
+			const {value: partial, divisableUntil: partialDivisable} = min(partiality)
+			const {value: total, divisableUntil: totalDivisable} = min(totality)
+
+			if (partialDivisable > totalDivisable) return `1/${totalDivisable}`
+			return `${partialDivisable}/${totalDivisable}`
+		}
 	}
 
   return `${reduce(`${times[0]}/${times[1]}`)}`
